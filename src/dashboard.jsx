@@ -214,7 +214,7 @@ function Dashboard() {
                             
                             <div className="flex w-full md:w-auto justify-between md:justify-end gap-1">
                                 <select className="w-[30%] md:w-auto bg-[#0B0E14] border border-slate-800 rounded-xl px-1 md:px-2 py-2 text-[10px] md:text-xs font-bold text-slate-400 outline-none" value={deptFilter} onChange={e => setDeptFilter(e.target.value)}>
-                                    <option value="">Departmentt</option>
+                                    <option value="">Department</option>
                                     <option value="1">Human Resources (HR)</option>
                                     <option value="2">Finance</option>
                                     <option value="3">Information Technology (IT)</option>
@@ -260,8 +260,10 @@ function Dashboard() {
                                                             <p className="font-black text-slate-500 uppercase text-[10px] tracking-widest mb-3">Actions</p>
                                                             <div className="flex flex-wrap items-center gap-4">
                                                                 <button onClick={() => window.open(`http://localhost:8001/api/v1/documents/${doc.id}/preview`, '_blank')} className="font-black text-emerald-400 uppercase text-xs">View</button>
-                                                                <button onClick={() => window.open(`http://localhost:8001/api/v1/documents/${doc.id}/download`, '_blank')} className="font-black text-blue-400 uppercase text-xs">Get</button>
-                                                                <button onClick={() => {setEditingDoc(doc); setEditTitle(doc.title); setEditDesc(doc.description || '');}} className="font-black text-amber-500 uppercase text-xs">Edit</button>
+                                                                <button onClick={() => window.open(`http://localhost:8001/api/v1/documents/${doc.id}/download`, '_blank')} className="font-black text-blue-400 uppercase text-xs">Download</button>
+                                                                {user?.department_id <= 4 && (
+                                                                    <button onClick={() => {setEditingDoc(doc); setEditTitle(doc.title); setEditDesc(doc.description || '');}} className="font-black text-amber-500 uppercase text-xs">Edit</button>
+                                                                )}
                                                                 {user?.department_id === 1 && <button onClick={() => handleDelete(doc.id)} className="font-black text-red-900 uppercase text-xs">Delete</button>}
                                                             </div>
                                                         </div>
@@ -270,8 +272,10 @@ function Dashboard() {
                                                 <td className="hidden md:table-cell px-6 py-6 text-right whitespace-nowrap">
                                                     <div className="flex items-center justify-end gap-6">
                                                         <button onClick={() => window.open(`http://localhost:8001/api/v1/documents/${doc.id}/preview`, '_blank')} className="font-black text-emerald-400 uppercase">View</button>
-                                                        <button onClick={() => window.open(`http://localhost:8001/api/v1/documents/${doc.id}/download`, '_blank')} className="font-black text-blue-400 uppercase">Get</button>
-                                                        <button onClick={() => {setEditingDoc(doc); setEditTitle(doc.title); setEditDesc(doc.description || '');}} className="font-black text-amber-500 uppercase">Edit</button>
+                                                        <button onClick={() => window.open(`http://localhost:8001/api/v1/documents/${doc.id}/download`, '_blank')} className="font-black text-blue-400 uppercase">Download</button>
+                                                        {user?.department_id <= 4 && (
+                                                            <button onClick={() => {setEditingDoc(doc); setEditTitle(doc.title); setEditDesc(doc.description || '');}} className="font-black text-amber-500 uppercase">Edit</button>
+                                                        )}
                                                         {user?.department_id === 1 && <button onClick={() => handleDelete(doc.id)} className="font-black text-red-900 uppercase">Delete</button>}
                                                     </div>
                                                 </td>
