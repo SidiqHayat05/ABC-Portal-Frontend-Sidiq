@@ -26,7 +26,6 @@ function Dashboard() {
     const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem('user'));
 
-
     const showToast = (text, type) => {
         setMessage({ text, type });
         setTimeout(() => setMessage({ text: '', type: '' }), 3000);
@@ -137,7 +136,7 @@ function Dashboard() {
         <div className="min-h-screen bg-[#0B0E14] flex font-sans text-slate-200 overflow-x-hidden relative">
             
             {message.text && (
-                <div className={`fixed top-10 right-10 p-4 rounded-xl font-black uppercase text-xs tracking-widest shadow-2xl z-[200] animate-bounce
+                <div className={`fixed top-10 right-10 p-4 rounded-xl font-black uppercase text-xs tracking-widest shadow-2xl z-200 animate-bounce
                     ${message.type === 'success' ? 'bg-emerald-500 text-white' : 'bg-red-600 text-white'}`}>
                     {message.text}
                 </div>
@@ -225,8 +224,6 @@ function Dashboard() {
                                     <option value="date">Latest</option>
                                     <option value="oldest">Oldest</option>
                                     <option value="name">Title (A-Z)</option>
-                                    <option value="size-small">Smallest</option>
-                                    <option value="size-large">Largest</option>
                                 </select>
                                 {user?.department_id <= 4 && (
                                     <button onClick={() => setShowUpload(true)} className="w-[30%] md:w-auto bg-blue-600 text-white px-2 md:px-3 py-2 rounded-xl font-bold text-[10px] md:text-xs uppercase">Upload</button>
@@ -250,7 +247,7 @@ function Dashboard() {
                                     ) : (
                                         filteredDocs.map(doc => (
                                             <tr key={doc.id} className="group hover:bg-blue-900/10 transition-colors flex flex-col md:table-row">
-                                                <td className="px-6 py-6" colSpan={window.innerWidth < 768 ? 2 : 1}>
+                                                <td className="px-6 py-6">
                                                     <div className="flex flex-col md:flex-row md:items-center md:justify-between w-full">
                                                         <div className="min-w-0">
                                                             <p className="font-bold text-slate-300 truncate">{doc.title}</p>
@@ -264,7 +261,7 @@ function Dashboard() {
                                                                 {user?.department_id <= 4 && (
                                                                     <button onClick={() => {setEditingDoc(doc); setEditTitle(doc.title); setEditDesc(doc.description || '');}} className="font-black text-amber-500 uppercase text-xs">Edit</button>
                                                                 )}
-                                                                {user?.department_id === 1 && <button onClick={() => handleDelete(doc.id)} className="font-black text-red-900 uppercase text-xs">Delete</button>}
+                                                                {user?.department_id == 1 && <button onClick={() => handleDelete(doc.id)} className="font-black text-red-900 uppercase text-xs">Delete</button>}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -276,7 +273,7 @@ function Dashboard() {
                                                         {user?.department_id <= 4 && (
                                                             <button onClick={() => {setEditingDoc(doc); setEditTitle(doc.title); setEditDesc(doc.description || '');}} className="font-black text-amber-500 uppercase">Edit</button>
                                                         )}
-                                                        {user?.department_id === 1 && <button onClick={() => handleDelete(doc.id)} className="font-black text-red-900 uppercase">Delete</button>}
+                                                        {user?.department_id == 1 && <button onClick={() => handleDelete(doc.id)} className="font-black text-red-900 uppercase">Delete</button>}
                                                     </div>
                                                 </td>
                                             </tr>
@@ -290,7 +287,7 @@ function Dashboard() {
             </main>
 
             {editingDoc && (
-                <div className="fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center z-100 p-4">
+                <div className="fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center z-110 p-4">
                     <div className="bg-[#11141B] p-8 rounded-[30px] w-full max-w-md border border-slate-800">
                         <h3 className="text-xl font-black text-white mb-6 uppercase italic">Patch Metadata</h3>
                         <form onSubmit={handleUpdate} className="space-y-4">
@@ -306,18 +303,13 @@ function Dashboard() {
             )}
 
             {showUpload && (
-                <div className="fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center z-100 p-4">
+                <div className="fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center z-110 p-4">
                     <div className="bg-[#11141B] p-8 rounded-[30px] w-full max-w-md border border-slate-800">
                         <h3 className="text-xl font-black text-white mb-6 uppercase italic">New Asset</h3>
                         <form onSubmit={handleUpload} className="space-y-4">
                             <input className="w-full p-4 bg-[#0B0E14] border border-slate-800 rounded-xl text-white text-sm" placeholder="Asset Title" value={title} onChange={e => setTitle(e.target.value)} required />
                             <input className="w-full p-4 bg-[#0B0E14] border border-slate-800 rounded-xl text-white text-sm" placeholder="Description" value={description} onChange={e => setDescription(e.target.value)} />
-                            
-                            <select 
-                                className="w-full p-4 bg-[#0B0E14] border border-slate-800 rounded-xl text-white text-sm outline-none"
-                                value={categoryId} 
-                                onChange={e => setCategoryId(e.target.value)}
-                            >
+                            <select className="w-full p-4 bg-[#0B0E14] border border-slate-800 rounded-xl text-white text-sm" value={categoryId} onChange={e => setCategoryId(e.target.value)}>
                                 <option value="1">Policy</option>
                                 <option value="2">Report</option>
                                 <option value="3">Template</option>
@@ -325,7 +317,6 @@ function Dashboard() {
                                 <option value="5">Form</option>
                                 <option value="6">Other</option>
                             </select>
-
                             <input type="file" className="w-full text-[10px] text-slate-500" onChange={e => setFile(e.target.files[0])} required />
                             <div className="flex gap-3 pt-2">
                                 <button type="submit" className="grow bg-blue-600 text-white py-3 rounded-xl font-black text-xs uppercase">Upload</button>
